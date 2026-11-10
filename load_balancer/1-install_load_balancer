@@ -29,8 +29,8 @@ frontend http_front
 
 backend web_servers
     balance roundrobin
-    server 7281-web-01 10.30.31.159:80 check
-    server 7281-web-02 10.30.26.93:80 check
+    server web-01 10.30.31.159:80 check
+server web-02 10.30.26.93:80 check
 EOF
 
 # Test HAProxy configuration
