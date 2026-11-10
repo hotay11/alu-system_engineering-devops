@@ -1,14 +1,20 @@
 #!/usr/bin/env bash
-# Configure Nginx to return the server hostname in the X-Served-By header
-# Install Nginx
+# Install Nginx and configure the X-Served-By response header
+
+set -e
+
+# Update package lists
 sudo apt-get update
+
+# Install Nginx
 sudo apt-get install -y nginx
 
 # Configure the custom response header
-echo 'add_header X-Served-By $hostname always;' | sudo tee /etc/nginx/conf.d/served_by.conf
+echo 'add_header X-Served-By $hostname always;' | sudo tee /etc/nginx/conf.d/served_by.conf > /dev/null
 
-# Test Nginx configuration
+# Check Nginx configuration
 sudo nginx -t
 
-# Restart Nginx
+# Enable and restart Nginx
+sudo systemctl enable nginx
 sudo systemctl restart nginx
