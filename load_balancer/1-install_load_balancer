@@ -1,7 +1,7 @@
 
 #!/usr/bin/env bash
 # Install and configure HAProxy to distribute traffic between web-01 and web-02
-
+echo "Configuring HAProxy with web-01 and web-02"
 set -e
 
 # Install HAProxy
