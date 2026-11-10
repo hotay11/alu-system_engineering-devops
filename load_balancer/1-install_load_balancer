@@ -1,15 +1,16 @@
-
 #!/usr/bin/env bash
-# Install and configure HAProxy to distribute traffic between web-01 and web-02
-echo "Configuring HAProxy with web-01 and web-02"
+# Install and configure HAProxy to balance traffic between web-01 and web-02
+
 set -e
 
-# Install HAProxy
+# Update package lists
 sudo apt-get update
+
+# Install HAProxy
 sudo apt-get install -y haproxy
 
 # Configure HAProxy
-sudo tee /etc/haproxy/haproxy.cfg > /dev/null <<'EOF'
+sudo tee /etc/haproxy/haproxy.cfg <<'EOF'
 global
     log /dev/log local0
     log /dev/log local1 notice
@@ -37,9 +38,6 @@ EOF
 # Validate HAProxy configuration
 sudo haproxy -c -f /etc/haproxy/haproxy.cfg
 
-# Enable and restart HAProxy
-sudo systemctl enable haproxy
-sudo systemctl restart haproxy
-
-# Display the configured backend servers
-sudo cat /etc/haproxy/haproxy.cfg
+# Enable HAProxy at startup and manage it through its init script
+sudo update-rc.d haproxy defaults
+sudo service haproxy restart
