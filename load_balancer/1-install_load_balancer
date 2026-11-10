@@ -4,10 +4,12 @@
 
 set -e
 
-apt-get update
-apt-get install -y haproxy
+# Install HAProxy
+sudo apt-get update
+sudo apt-get install -y haproxy
 
-cat > /etc/haproxy/haproxy.cfg <<'EOF'
+# Configure HAProxy
+sudo tee /etc/haproxy/haproxy.cfg > /dev/null <<'EOF'
 global
     log /dev/log local0
     log /dev/log local1 notice
@@ -32,6 +34,12 @@ backend web_servers
     server web-02 10.30.26.93:80 check
 EOF
 
-haproxy -c -f /etc/haproxy/haproxy.cfg
-systemctl enable haproxy
-systemctl restart haproxy
+# Validate HAProxy configuration
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Enable and restart HAProxy
+sudo systemctl enable haproxy
+sudo systemctl restart haproxy
+
+# Display the configured backend servers
+sudo cat /etc/haproxy/haproxy.cfg
